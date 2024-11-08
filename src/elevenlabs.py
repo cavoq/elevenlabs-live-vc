@@ -1,8 +1,7 @@
 import os
-from typing import IO
 from src.audio import play_audio_from_file
 from elevenlabs.client import ElevenLabs
-from elevenlabs.play import play, save
+from elevenlabs.play import save
 
 
 class ElevenLabsClient:
@@ -24,5 +23,7 @@ class ElevenLabsClient:
             enable_logging=True,
             remove_background_noise=True,
         )
-        save(audio, "recordings/output.wav")
-        play_audio_from_file("recordings/output.wav")
+        # TODO: Don't save the file to disk (Play didn't work directly)
+        output_path = os.path.join("recordings", "output.wav")
+        save(audio, output_path)
+        play_audio_from_file(output_path)
