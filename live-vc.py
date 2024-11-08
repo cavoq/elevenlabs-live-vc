@@ -1,13 +1,12 @@
 import cmd
 import os
+from src.elevenlabs import ElevenLabsClient
+from src.audio import *
 import colorama
 from dotenv import load_dotenv
-import time
 import keyboard
-from src.audio import *
 
 load_dotenv()
-load_dotenv("bot.env")
 colorama.init()
 
 banner = """
@@ -51,13 +50,13 @@ class ElevenlabsLiveVCCmd(cmd.Cmd):
         """Set the mode to automatic (1) or manual (0)."""
         try:
             mode = int(arg)
-            if mode not in self.live_vc.config.valid_modes():
+            if mode not in self.live_vc.audio_settings.valid_modes():
                 print(
                     f"{colorama.Fore.YELLOW}Invalid mode. Please enter 0 for manual or 1 for automatic.{
                         colorama.Style.RESET_ALL}"
                 )
                 return
-            self.live_vc.config.mode = mode
+            self.live_vc.audio_settings.mode = mode
             mode_str = "automatic" if self.mode == 1 else "manual"
             print(
                 f"{colorama.Fore.GREEN}Mode set to {mode_str}.{
@@ -71,31 +70,14 @@ class ElevenlabsLiveVCCmd(cmd.Cmd):
 
     def do_get_mode(self, arg):
         """Get the current mode (1 = automatic, 0 = manual)."""
-        mode_str = "automatic" if self.live_vc.config.mode == 1 else "manual"
+        mode_str = "automatic" if self.live_vc.audio_settings.mode == 1 else "manual"
         print(f"Current mode is {mode_str}.")
 
 
-class Config:
-    def __init__(self, mode: int = 0, sample_rate=48000, channels=1):
-        self.mode = mode
-        self.sample_rate = sample_rate
-        self.channels = channels
-
-    def valid_modes(self):
-        return [0, 1]
-
-    @classmethod
-    def from_env(cls):
-        return cls(
-            mode=int(os.getenv("MODE", 0)),
-            sample_rate=int(os.getenv("SAMPLE_RATE", 48000)),
-            channels=int(os.getenv("CHANNELS", 1))
-        )
-
-
 class ElevenLabsLiveVC:
-    def __init__(self, config: Config):
-        self.config = config
+    def __init__(self, audio_settings: AudioSettings):
+        self.audio_settings = audio_settings
+        self.elevenlabs_client = ElevenLabsClient.from_env()
         self.is_recording = False
         self.audio_data = []
         self.stream = None
@@ -104,7 +86,7 @@ class ElevenLabsLiveVC:
 
     @classmethod
     def from_env(cls):
-        return cls(Config.from_env())
+        return cls(AudioSettings.from_env())
 
     def handle_recording(self, event):
         if self.is_recording:
@@ -122,8 +104,8 @@ class ElevenLabsLiveVC:
 
         self.stream = sd.InputStream(
             callback=self.record_callback,
-            channels=self.config.channels,
-            samplerate=self.config.sample_rate,
+            channels=self.audio_settings.channels,
+            samplerate=self.audio_settings.sample_rate,
             dtype='float32'
         )
         self.stream.start()
@@ -145,6 +127,7 @@ class ElevenLabsLiveVC:
         audio_data = np.concatenate(self.audio_data)
         audio_data = enhance_audio_quality(audio_data)
         self.audio = save_to_memory(audio_data)
+        self.elevenlabs_client.process_audio(self.audio)
 
     def stop_recording(self):
         print(

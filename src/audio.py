@@ -1,9 +1,29 @@
 from io import BytesIO
+import os
 import sounddevice as sd
+import soundfile as sf
 import numpy as np
 from scipy.signal import butter, filtfilt
 from scipy.io.wavfile import write, read
 import librosa
+
+
+class AudioSettings:
+    def __init__(self, mode: int = 0, sample_rate=48000, channels=1):
+        self.mode = mode
+        self.sample_rate = sample_rate
+        self.channels = channels
+
+    def valid_modes(self):
+        return [0, 1]
+
+    @classmethod
+    def from_env(cls):
+        return cls(
+            mode=int(os.getenv("MODE", 0)),
+            sample_rate=int(os.getenv("SAMPLE_RATE", 48000)),
+            channels=int(os.getenv("CHANNELS", 1))
+        )
 
 
 def record_audio(duration: int, sample_rate=48000, channels=1) -> np.ndarray:
@@ -59,5 +79,17 @@ def save_to_file(audio_data: np.ndarray, file_path: str, sample_rate=48000):
 
 def play_audio_from_memory(wav_memory: BytesIO):
     sample_rate, audio_data = read(wav_memory)
+    sd.play(audio_data, samplerate=sample_rate)
+    sd.wait()
+
+
+def play_audio(audio_bytes: bytes, sample_rate=48000):
+    audio_data = np.frombuffer(audio_bytes, dtype='int16')
+    sd.play(audio_data, samplerate=sample_rate)
+    sd.wait()
+
+
+def play_audio_from_file(filename: str):
+    audio_data, sample_rate = sf.read(filename)
     sd.play(audio_data, samplerate=sample_rate)
     sd.wait()
