@@ -4,3 +4,4 @@ scipy==1.14.1
 python-dotenv==1.0.1
 numba==0.60.0
 librosa==0.10.2.post1 
+colorama==0.4.6 
