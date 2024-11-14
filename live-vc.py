@@ -1,5 +1,6 @@
 import cmd
 import os
+from settings.audio import AudioSettings
 from src.elevenlabs import ElevenLabsClient
 from src.audio import *
 import colorama
