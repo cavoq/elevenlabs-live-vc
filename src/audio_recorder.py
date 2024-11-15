@@ -1,6 +1,4 @@
-from scipy.io.wavfile import write
 import numpy as np
-from io import BytesIO
 import sounddevice as sd
 
 from src.settings.audio import AudioSettings
@@ -17,17 +15,8 @@ class AudioRecorder:
     def from_env(cls):
         return cls(AudioSettings.from_env())
 
-    def get_audio_stream(self) -> BytesIO:
-        if not self.audio_data:
-            return BytesIO()
-
-        audio_data = np.concatenate(self.audio_data, axis=0)
-        audio_data_pcm = (audio_data * 32767).astype(np.int16)
-
-        wav_memory = BytesIO()
-        write(wav_memory, self.settings.sample_rate, audio_data_pcm)
-        wav_memory.seek(0)
-        return wav_memory
+    def get_audio_data(self) -> np.ndarray:
+        return self.audio_data
 
     def callback(self, indata, frames, time, status):
         if self.is_recording:
