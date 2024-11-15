@@ -1,7 +1,12 @@
+import io
+import wave
 import colorama
 import keyboard
+import numpy as np
+import sounddevice as sd
 from src.audio_recorder import AudioRecorder
 from src.el_client import ElevenLabsClient
+from pydub import AudioSegment
 
 
 class AudioHandler:
@@ -24,7 +29,7 @@ class AudioHandler:
                     colorama.Style.RESET_ALL}"
             )
             self.recorder.stop()
-            self.el_client.process_audio(self.recorder.get_audio_stream())
+            self.el_client.convert_audio(self.recorder.get_audio_stream())
         else:
             print(
                 f"\n{colorama.Fore.GREEN}Start recording, press space to stop...{

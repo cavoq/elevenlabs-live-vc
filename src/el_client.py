@@ -1,5 +1,6 @@
 from io import BytesIO
 import os
+from typing import Iterator
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play
 
@@ -16,10 +17,10 @@ class ElevenLabsClient:
             os.getenv("VOICE_ID", None)
         )
 
-    def process_audio(self, audio: BytesIO):
-        audio = self.client.speech_to_speech.convert(
+    def convert_audio(self, audio: BytesIO):
+        audio = self.client.speech_to_speech.convert_as_stream(
             voice_id=self.voice_id,
             audio=audio,
             remove_background_noise=True,
         )
-        play(audio, use_ffmpeg=False)
+        play(audio)

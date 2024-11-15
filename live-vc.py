@@ -1,7 +1,6 @@
 import cmd
 import os
 from src.audio_handler import AudioHandler
-from src.audio import *
 import colorama
 from dotenv import load_dotenv
 
