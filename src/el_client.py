@@ -1,7 +1,7 @@
+from io import BytesIO
 import os
-from src.audio import play_audio_from_file
 from elevenlabs.client import ElevenLabs
-from elevenlabs.play import save
+from elevenlabs.play import play
 
 
 class ElevenLabsClient:
@@ -16,14 +16,10 @@ class ElevenLabsClient:
             os.getenv("VOICE_ID", None)
         )
 
-    def process_audio(self, audio):
+    def process_audio(self, audio: BytesIO):
         audio = self.client.speech_to_speech.convert(
             voice_id=self.voice_id,
             audio=audio,
-            enable_logging=True,
             remove_background_noise=True,
         )
-        # TODO: Don't save the file to disk (Play didn't work directly)
-        output_path = os.path.join("recordings", "output.wav")
-        save(audio, output_path)
-        play_audio_from_file(output_path)
+        play(audio, use_ffmpeg=False)
