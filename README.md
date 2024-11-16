@@ -1,6 +1,18 @@
 # elevenlabs-live-vc
 
-Live speech to speech bot for utilizing the elevenlabs API.
+```bash
+Live speech to speech bot using Eleven Labs API.
+
+██╗     ██╗██╗   ██╗███████╗    ██╗   ██╗ ██████╗
+██║     ██║██║   ██║██╔════╝    ██║   ██║██╔════╝
+██║     ██║██║   ██║█████╗█████╗██║   ██║██║
+██║     ██║╚██╗ ██╔╝██╔══╝╚════╝╚██╗ ██╔╝██║
+███████╗██║ ╚████╔╝ ███████╗     ╚████╔╝ ╚██████╗
+╚══════╝╚═╝  ╚═══╝  ╚══════╝      ╚═══╝   ╚═════╝
+
+Description: A live voice-changer utilizing elevenlabs voice-cloning API.
+Author: https://github.com/cavoq
+```
 
 # Environment Setup
 
@@ -23,6 +35,15 @@ pip install -r requirements.txt
 
 ## Usage
 
+### Command Line
+
 ```bash
 python live_vc.py
+```
+
+### Docker
+
+```bash
+docker build -t el-live-vc .
+docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 ```
