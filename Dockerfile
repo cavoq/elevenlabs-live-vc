@@ -5,6 +5,13 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /elevenlabs-live-vc
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    libportaudio2 \
+    portaudio19-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 
 RUN pip install --upgrade pip \

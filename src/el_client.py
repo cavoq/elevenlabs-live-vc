@@ -1,6 +1,5 @@
 from io import BytesIO
 import os
-from typing import Iterator
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play
 

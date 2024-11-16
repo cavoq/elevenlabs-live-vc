@@ -1,6 +1,4 @@
 import numpy as np
-import librosa
-from scipy.signal import butter, filtfilt
 from io import BytesIO
 from scipy.io.wavfile import write
 
