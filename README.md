@@ -23,7 +23,7 @@ Author: https://github.com/cavoq
 - **Two Recording Modes**:
   - **Manual Mode (MODE=0)** - Press SPACE to start/stop recording
   - **Automatic Mode (MODE=1)** - Voice Activity Detection (VAD) auto-detects speech
-- **Auto-Cleanup** - Temporary recordings are automatically deleted after 10 minutes
+- **Configurable Audio Settings** - Sample rate, channels, silence threshold, noise reduction
 
 ## Use Cases 💡
 
@@ -67,7 +67,7 @@ uv sync
 pip install -r requirements.txt
 ```
 
-### 3. Create your `.env` file
+### 3. Environment Variables
 
 Create a file named `.env` in the root directory:
 
@@ -103,7 +103,7 @@ MODE=0
 
 ## Usage ▶️
 
-### Starting the Application
+### Start the Application
 
 #### Option A: uv
 
@@ -111,7 +111,7 @@ MODE=0
 uv run python live-vc.py
 ```
 
-#### Option B: pip
+#### Option B: Python
 
 ```bash
 python live-vc.py
@@ -129,7 +129,7 @@ python live-vc.py
 Enable by setting `MODE=1` in `.env` or typing `set_mode 1` in the app.
 
 1. Just start speaking - recording begins automatically
-2. Stop speaking - after 1.5 seconds of silence, recording stops
+2. Stop speaking - after a short silence, recording stops
 3. Processing happens automatically
 4. Cycle repeats - starts listening again after processing
 
@@ -155,26 +155,15 @@ Enable by setting `MODE=1` in `.env` or typing `set_mode 1` in the app.
 
 ### Audio Flow
 
+```mermaid
+flowchart LR
+  A["Your Mic"]
+  B["elevenlabs-live-vc"]
+  C["VB-Cable Input"]
+  D["VB-Cable Output"]
+  E["Call App"]
+  A --> B --> C --> D --> E
 ```
-┌─────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────┐
-│ Your Mic    │───►│ elevenlabs-live-vc│───►│ VB-Cable Input   │───►│ Call App     │
-│ (Input)     │    │ (Voice Transform)│    │ (Virtual Speaker)│    │ (Discord etc)│
-└─────────────┘    └──────────────────┘    └──────────────────┘    └──────────────┘
-                                                    │
-                                                    ▼
-                                           ┌──────────────────┐
-                                           │ VB-Cable Output  │
-                                           │ (Virtual Mic)    │
-                                           └──────────────────┘
-```
-
-## Temporary Recordings
-
-For debugging purposes, transformed audio is saved to the `recordings/` folder.
-
-- Files are named: `transformed_YYYYMMDD_HHMMSS.mp3`
-- **Auto-cleanup**: Files older than 10 minutes are automatically deleted
-- You can play these files to verify the voice transformation is working
 
 ## Docker 🐳
 
@@ -186,11 +175,13 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 ## Troubleshooting 🛠️
 
 ### "No audio recorded" message
+
 - Make sure you're speaking long enough (at least 0.5 seconds)
 - Check that your microphone is set as the default Windows input device
 - Verify microphone permissions in Windows Settings
 
 ### VB-Cable not detected
+
 - Ensure VB-Cable is installed correctly
 - The app looks for a device containing "CABLE Input" in the name
 - Restart the app after installing VB-Cable
@@ -201,6 +192,7 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 - Verify the app shows "Done! Audio sent to VB-Cable."
 
 ### API Errors
+
 - Verify your API key is correct in `.env`
 - Check your ElevenLabs account has available credits
 - Ensure the Voice ID exists and you have access to it
@@ -213,6 +205,15 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 | `VOICE_ID` | (required) | The voice to transform into |
 | `SAMPLE_RATE` | 48000 | Audio sample rate in Hz |
 | `CHANNELS` | 1 | Number of audio channels (1=mono) |
+| `SILENCE_THRESHOLD` | 0.01 | Silence trim threshold (RMS) |
+| `REMOVE_BACKGROUND_NOISE` | 1 | 1=Enable, 0=Disable |
+| `OUTPUT_SAMPLE_RATE` | 48000 | Playback device sample rate in Hz |
+| `API_SAMPLE_RATE` | 22050 | API output sample rate in Hz (PCM) |
+| `OUTPUT_DEVICE` | (optional) | Audio output device index |
+| `OUTPUT_DEVICE_NAME` | (optional) | Output device name substring |
+| `VAD_SILENCE_DURATION` | 0.8 | Seconds of silence before auto-stop |
+| `VAD_MIN_RECORDING_DURATION` | 0.3 | Minimum recording length in seconds |
+| `VAD_PRE_BUFFER_DURATION` | 0.5 | Pre-buffer audio in seconds |
 | `MODE` | 0 | 0=Manual, 1=Automatic (VAD) |
 
 ## License 📄
@@ -222,5 +223,10 @@ GNU General Public License v3.0 - See [LICENSE](LICENSE) for details.
 ## Credits 🙌
 
 - **Author**: [cavoq](https://github.com/cavoq)
+- **Additional Contributors**: [ayeantics](https://github.com/ayeantics)
 - **ElevenLabs**: [https://elevenlabs.io](https://elevenlabs.io)
 - **VB-Audio**: [https://vb-audio.com](https://vb-audio.com)
+
+
+
+
