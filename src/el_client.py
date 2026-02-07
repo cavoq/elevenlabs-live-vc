@@ -16,10 +16,10 @@ class ElevenLabsClient:
             os.getenv("VOICE_ID", None)
         )
 
-    def convert_audio(self, audio: BytesIO):
+    def convert_audio(self, audio: BytesIO, remove_background_noise: bool):
         audio = self.client.speech_to_speech.convert_as_stream(
             voice_id=self.voice_id,
             audio=audio,
-            remove_background_noise=True,
+            remove_background_noise=remove_background_noise,
         )
         play(audio)

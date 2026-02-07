@@ -28,7 +28,10 @@ class AudioHandler:
             )
             self.recorder.stop()
             audio = self.recorder.get_audio_data()
-            self.el_client.convert_audio(self.processor.get_audio_stream(audio))
+            self.el_client.convert_audio(
+                self.processor.get_audio_stream(audio),
+                remove_background_noise=self.recorder.settings.remove_background_noise
+            )
         else:
             print(
                 f"\n{colorama.Fore.GREEN}Start recording, press space to stop...{
