@@ -17,6 +17,7 @@ class AudioSettings:
         self.channels = channels
         self.silence_threshold = silence_threshold
         self.remove_background_noise = remove_background_noise
+        self.min_audio_duration = float(os.getenv("MIN_AUDIO_DURATION", 0.1))
         self.vad_silence_duration = vad_silence_duration
         self.vad_min_recording_duration = vad_min_recording_duration
         self.vad_pre_buffer_duration = vad_pre_buffer_duration

@@ -31,9 +31,18 @@ class AudioProcessor:
         end = int(non_silent[-1]) + 1
         return audio_data[start:end]
 
-    def get_audio_stream(self, audio_data: np.ndarray) -> BytesIO:
+    def get_audio_stream(self, audio_data: np.ndarray) -> BytesIO | None:
+        if audio_data is None or len(audio_data) == 0:
+            return None
+
         audio_data = np.concatenate(audio_data, axis=0)
         audio_data = self._trim_silence(audio_data)
+        if audio_data.size == 0:
+            return None
+
+        min_samples = int(self.settings.min_audio_duration * self.settings.sample_rate)
+        if audio_data.shape[0] < min_samples:
+            return None
         audio_data_pcm = (audio_data * 32767).astype(np.int16)
         wav_memory = BytesIO()
         write(wav_memory, self.settings.sample_rate, audio_data_pcm)
