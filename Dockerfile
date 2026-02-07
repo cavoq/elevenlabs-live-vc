@@ -1,4 +1,4 @@
-FROM python:3.12.6-slim
+FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -13,11 +13,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-
 RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+    && pip install uv
+
+COPY pyproject.toml .
+
+RUN uv sync --no-dev
 
 COPY . .
 
-CMD ["python", "live-vc.py"]
+CMD ["uv", "run", "python", "live-vc.py"]

@@ -37,6 +37,7 @@ Author: https://github.com/cavoq
 2. **VB-Cable** - Download and install from [https://vb-audio.com/Cable/](https://vb-audio.com/Cable/)
 3. **FFmpeg** - Required for audio processing. Download from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
 4. **Python 3.13+** - Download from [https://python.org](https://python.org)
+5. **uv (optional, recommended)** - Install from [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
 
 ## Installation
 
@@ -48,6 +49,17 @@ cd elevenlabs-live-vc
 ```
 
 ### 2. Install dependencies
+
+#### Option A: uv (recommended)
+
+```bash
+## uv can install Python for you if you don't have 3.13 yet
+uv python install 3.13
+uv venv --python 3.13
+uv sync
+```
+
+#### Option B: pip
 
 ```bash
 pip install -r requirements.txt
@@ -78,6 +90,14 @@ MODE=0
 ## Usage
 
 ### Starting the Application
+
+#### Option A: uv
+
+```bash
+uv run python live-vc.py
+```
+
+#### Option B: pip
 
 ```bash
 python live-vc.py
