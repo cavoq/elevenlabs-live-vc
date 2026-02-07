@@ -82,6 +82,7 @@ VOICE_ID=your_voice_id_here
 # Optional - Audio settings
 SAMPLE_RATE=48000
 CHANNELS=1
+SILENCE_THRESHOLD=0.01
 
 # Optional - Recording mode
 # 0 = Manual (press SPACE to record)

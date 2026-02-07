@@ -1,10 +1,11 @@
 import os
 
 class AudioSettings:
-    def __init__(self, mode: int = 0, sample_rate=48000, channels=1):
+    def __init__(self, mode: int = 0, sample_rate=48000, channels=1, silence_threshold=0.01):
         self.mode = mode
         self.sample_rate = sample_rate
         self.channels = channels
+        self.silence_threshold = silence_threshold
 
     def valid_modes(self):
         return [0, 1]
@@ -14,5 +15,6 @@ class AudioSettings:
         return cls(
             mode=int(os.getenv("MODE", 0)),
             sample_rate=int(os.getenv("SAMPLE_RATE", 48000)),
-            channels=int(os.getenv("CHANNELS", 1))
+            channels=int(os.getenv("CHANNELS", 1)),
+            silence_threshold=float(os.getenv("SILENCE_THRESHOLD", 0.01))
         )
