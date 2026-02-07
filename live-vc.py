@@ -31,6 +31,13 @@ class ElevenlabsLiveVCCmd(cmd.Cmd):
         super().__init__()
         self.audio_handler = AudioHandler.from_env()
 
+    def cmdloop(self, intro=None):
+        # Print banner first, then start VAD to keep ordering clean.
+        print(self.intro)
+        if self.audio_handler.recorder.vad_enabled:
+            self.audio_handler.start_vad_mode()
+        super().cmdloop(intro="")
+
     def do_clear(self, arg=None):
         """Clear the screen."""
         if os.name == 'nt':

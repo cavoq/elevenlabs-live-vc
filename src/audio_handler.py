@@ -12,6 +12,9 @@ class AudioHandler:
         self.el_client = el_client
         keyboard.on_press_key("space", self.handle_recording)
 
+        if self.recorder.vad_enabled:
+            self.recorder.set_vad_callback(self.process_vad_recording)
+
     @classmethod
     def from_env(cls):
         return cls(
@@ -32,9 +35,25 @@ class AudioHandler:
                 self.processor.get_audio_stream(audio),
                 remove_background_noise=self.recorder.settings.remove_background_noise
             )
+            if self.recorder.vad_enabled:
+                self.recorder.start_continuous()
         else:
             print(
                 f"\n{colorama.Fore.GREEN}Start recording, press space to stop...{
                     colorama.Style.RESET_ALL}"
             )
             self.recorder.start()
+
+    def process_vad_recording(self):
+        audio = self.recorder.get_audio_data()
+        self.el_client.convert_audio(
+            self.processor.get_audio_stream(audio),
+            remove_background_noise=self.recorder.settings.remove_background_noise
+        )
+        self.recorder.start_continuous()
+
+    def start_vad_mode(self):
+        print(f"{colorama.Fore.CYAN}=== VAD Mode Active ==={colorama.Style.RESET_ALL}")
+        print(f"{colorama.Fore.CYAN}Speak naturally - recording starts/stops automatically{colorama.Style.RESET_ALL}")
+        print(f"{colorama.Fore.CYAN}Press SPACE to manually trigger, Ctrl+C to exit{colorama.Style.RESET_ALL}")
+        self.recorder.start_continuous()
