@@ -1,4 +1,6 @@
-# elevenlabs-live-vc
+# elevenlabs-live-vc 🎙️
+
+[![build](https://github.com/cavoq/elevenlabs-live-vc/actions/workflows/build.yml/badge.svg)](https://github.com/cavoq/elevenlabs-live-vc/actions/workflows/build.yml)
 
 ```
 Live speech to speech bot using Eleven Labs API.
@@ -14,7 +16,7 @@ Description: A live voice-changer utilizing elevenlabs voice-cloning API.
 Author: https://github.com/cavoq
 ```
 
-## Features
+## Features ✨
 
 - **Real-time Voice Transformation** - Transform your voice using ElevenLabs' AI voice cloning
 - **VB-Cable Integration** - Automatically routes transformed audio to VB-Cable for use in calls
@@ -23,7 +25,7 @@ Author: https://github.com/cavoq
   - **Automatic Mode (MODE=1)** - Voice Activity Detection (VAD) auto-detects speech
 - **Auto-Cleanup** - Temporary recordings are automatically deleted after 10 minutes
 
-## Use Cases
+## Use Cases 💡
 
 - Discord voice calls with voice changing
 - Zoom/Teams meetings
@@ -31,7 +33,7 @@ Author: https://github.com/cavoq
 - Streaming with OBS
 - Any application that supports microphone input
 
-## Prerequisites
+## Prerequisites 🧰
 
 1. **ElevenLabs Account** - Get your API key from [ElevenLabs](https://elevenlabs.io/app/settings/api-keys)
 2. **VB-Cable** - Download and install from [https://vb-audio.com/Cable/](https://vb-audio.com/Cable/)
@@ -39,7 +41,7 @@ Author: https://github.com/cavoq
 4. **Python 3.12.x or 3.13.x** (3.13.12 recommended) - Download from [https://python.org](https://python.org)
 5. **uv (optional, recommended)** - Install from [https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
 
-## Installation
+## Installation 📦
 
 ### 1. Clone the repository
 
@@ -87,7 +89,7 @@ CHANNELS=1
 MODE=0
 ```
 
-## Usage
+## Usage ▶️
 
 ### Starting the Application
 
@@ -162,14 +164,14 @@ For debugging purposes, transformed audio is saved to the `recordings/` folder.
 - **Auto-cleanup**: Files older than 10 minutes are automatically deleted
 - You can play these files to verify the voice transformation is working
 
-## Docker
+## Docker 🐳
 
 ```bash
 docker build -t el-live-vc .
 docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 ```
 
-## Troubleshooting
+## Troubleshooting 🛠️
 
 ### "No audio recorded" message
 - Make sure you're speaking long enough (at least 0.5 seconds)
@@ -191,7 +193,7 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 - Check your ElevenLabs account has available credits
 - Ensure the Voice ID exists and you have access to it
 
-## Configuration Options
+## Configuration Options ⚙️
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
@@ -201,11 +203,11 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 | `CHANNELS` | 1 | Number of audio channels (1=mono) |
 | `MODE` | 0 | 0=Manual, 1=Automatic (VAD) |
 
-## License
+## License 📄
 
 GNU General Public License v3.0 - See [LICENSE](LICENSE) for details.
 
-## Credits
+## Credits 🙌
 
 - **Author**: [cavoq](https://github.com/cavoq)
 - **ElevenLabs**: [https://elevenlabs.io](https://elevenlabs.io)
