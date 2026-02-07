@@ -17,7 +17,7 @@ class AudioRecorder:
 
         # VAD settings
         self.vad_enabled = settings.mode == 1
-        self.silence_threshold = settings.silence_threshold
+        self.silence_threshold = settings.vad_threshold
         self.silence_duration = settings.vad_silence_duration
         self.min_recording_duration = settings.vad_min_recording_duration
         self.pre_buffer_duration = settings.vad_pre_buffer_duration
@@ -47,6 +47,8 @@ class AudioRecorder:
         return np.sqrt(np.mean(audio_chunk ** 2))
 
     def callback(self, indata, frames, time_info, status):
+        if status:
+            print(f"{colorama.Fore.YELLOW}[VAD] Input status: {status}{colorama.Style.RESET_ALL}")
         audio_copy = indata.copy()
 
         if self.vad_enabled:
@@ -103,7 +105,8 @@ class AudioRecorder:
                 callback=self.callback,
                 channels=self.settings.channels,
                 samplerate=self.settings.sample_rate,
-                dtype='float32'
+                dtype='float32',
+                device=self.settings.input_device
             )
             self.stream.start()
 
@@ -133,7 +136,8 @@ class AudioRecorder:
                 callback=self.callback,
                 channels=self.settings.channels,
                 samplerate=self.settings.sample_rate,
-                dtype='float32'
+                dtype='float32',
+                device=self.settings.input_device
             )
             self.stream.start()
 

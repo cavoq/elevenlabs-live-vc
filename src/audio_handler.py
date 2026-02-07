@@ -46,8 +46,13 @@ class AudioHandler:
 
     def process_vad_recording(self):
         audio = self.recorder.get_audio_data()
+        audio_stream = self.processor.get_audio_stream(audio)
+        if audio_stream is None:
+            print(f"{colorama.Fore.YELLOW}No usable audio recorded. Try speaking longer.{colorama.Style.RESET_ALL}")
+            self.recorder.start_continuous()
+            return
         self.el_client.convert_audio(
-            self.processor.get_audio_stream(audio),
+            audio_stream,
             remove_background_noise=self.recorder.settings.remove_background_noise
         )
         self.recorder.start_continuous()

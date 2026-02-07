@@ -83,12 +83,16 @@ VOICE_ID=your_voice_id_here
 SAMPLE_RATE=48000
 CHANNELS=1
 SILENCE_THRESHOLD=0.01
+VAD_THRESHOLD=0.01
 REMOVE_BACKGROUND_NOISE=1
 OUTPUT_SAMPLE_RATE=48000
 API_SAMPLE_RATE=22050
 # Optional - audio output selection
 # OUTPUT_DEVICE=5
 # OUTPUT_DEVICE_NAME=VB-Cable
+# Optional - audio input selection
+# INPUT_DEVICE=2
+# INPUT_DEVICE_NAME=Microphone
 
 # Optional - VAD (Automatic mode)
 VAD_SILENCE_DURATION=0.8
@@ -206,11 +210,14 @@ docker run --env-file .env -it --privileged -v /dev/input:/dev/input el-live-vc
 | `SAMPLE_RATE` | 48000 | Audio sample rate in Hz |
 | `CHANNELS` | 1 | Number of audio channels (1=mono) |
 | `SILENCE_THRESHOLD` | 0.01 | Silence trim threshold (RMS) |
+| `VAD_THRESHOLD` | 0.01 | Voice detection threshold (RMS) |
 | `REMOVE_BACKGROUND_NOISE` | 1 | 1=Enable, 0=Disable |
 | `OUTPUT_SAMPLE_RATE` | 48000 | Playback device sample rate in Hz |
 | `API_SAMPLE_RATE` | 22050 | API output sample rate in Hz (PCM) |
 | `OUTPUT_DEVICE` | (optional) | Audio output device index |
 | `OUTPUT_DEVICE_NAME` | (optional) | Output device name substring |
+| `INPUT_DEVICE` | (optional) | Audio input device index |
+| `INPUT_DEVICE_NAME` | (optional) | Input device name substring |
 | `VAD_SILENCE_DURATION` | 0.8 | Seconds of silence before auto-stop |
 | `VAD_MIN_RECORDING_DURATION` | 0.3 | Minimum recording length in seconds |
 | `VAD_PRE_BUFFER_DURATION` | 0.5 | Pre-buffer audio in seconds |
@@ -226,7 +233,6 @@ GNU General Public License v3.0 - See [LICENSE](LICENSE) for details.
 - **Additional Contributors**: [ayeantics](https://github.com/ayeantics)
 - **ElevenLabs**: [https://elevenlabs.io](https://elevenlabs.io)
 - **VB-Audio**: [https://vb-audio.com](https://vb-audio.com)
-
 
 
 
