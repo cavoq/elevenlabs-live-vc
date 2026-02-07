@@ -18,7 +18,7 @@ banner = """
 
 description = """Description: A live voice-changer utilizing elevenlabs voice-cloning API.
 Author: https://github.com/cavoq
-Version: 1.0.0
+Version: 2.0.0
 """
 
 

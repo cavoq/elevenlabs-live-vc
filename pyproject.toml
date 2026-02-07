@@ -1,6 +1,6 @@
 [project]
 name = "elevenlabs-live-vc"
-version = "1.0.0"
+version = "2.0.0"
 description = "A live voice-changer utilizing elevenlabs voice-cloning API."
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
