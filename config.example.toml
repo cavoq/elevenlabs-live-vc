@@ -1,0 +1,30 @@
+# Copy this file to config.toml and fill in these two values.
+api_key = "your_elevenlabs_api_key"
+voice_id = "your_voice_id"
+
+# "manual": SPACE starts/stops recording.
+# "automatic": voice activity detection starts/stops recording.
+mode = "automatic"
+
+# ElevenLabs recommends this model for Voice Changer.
+model_id = "eleven_multilingual_sts_v2"
+remove_background_noise = true
+
+# A number selects a device by the index printed by --list-devices.
+# Any other text selects the first case-insensitive name match.
+# input_device = "Microphone"
+# output_device = "VB-Cable"
+
+# Raw 16 kHz PCM has lower API latency. Set false to upload a WAV instead.
+low_latency_input = true
+output_format = "pcm_22050"
+api_output_sample_rate = 22050
+
+vad_threshold = 0.01
+vad_silence_ms = 350
+vad_min_recording_ms = 300
+vad_pre_buffer_ms = 250
+
+min_audio_ms = 150
+trim_threshold = 0.005
+trim_padding_ms = 100

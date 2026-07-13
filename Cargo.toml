@@ -1,0 +1,24 @@
+[package]
+name = "elevenlabs-live-vc"
+version = "3.0.0"
+edition = "2024"
+description = "Low-latency live voice conversion with the ElevenLabs API"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/cavoq/elevenlabs-live-vc"
+
+[dependencies]
+anyhow = "1.0"
+cpal = "0.18.1"
+crossterm = "0.29"
+ctrlc = "3.5"
+hound = "3.5"
+reqwest = { version = "0.13.4", default-features = false, features = ["blocking", "multipart", "query", "rustls", "system-proxy"] }
+rubato = "0.16.2"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.9"
+urlencoding = "2.1"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
